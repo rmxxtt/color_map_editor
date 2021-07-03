@@ -28,6 +28,7 @@ func main() {
 	colorMap := generate(numberColors)
 	fmt.Println(colorMap)
 	save(colorMap)
+	fmt.Println("Готово!")
 }
 
 func generate(numberColors uint16) []Color {
