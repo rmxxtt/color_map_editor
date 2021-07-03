@@ -1,14 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 )
 
 type Color struct {
-	red   uint8
-	green uint8
-	blue  uint8
+	Red   uint8 `json:"red"`
+	Green uint8 `json:"green"`
+	Blue  uint8 `json:"blue"`
 }
 
 func main() {
@@ -24,13 +26,14 @@ func main() {
 
 	fmt.Printf("Генерация %d цвета(ов) ...\n", numberColors)
 	colorMap := generate(numberColors)
+	fmt.Println(colorMap)
 	save(colorMap)
 }
 
 func generate(numberColors uint16) []Color {
 	var colorMap = make([]Color, numberColors)
 	for k := range colorMap {
-		colorMap[k] = Color{red: randomColor(), green: randomColor(), blue: randomColor()}
+		colorMap[k] = Color{Red: randomColor(), Green: randomColor(), Blue: randomColor()}
 	}
 	return colorMap
 }
@@ -42,5 +45,14 @@ func randomColor() uint8 {
 }
 
 func save(colorMap []Color) {
-	println(colorMap)
+	data, err := json.MarshalIndent(colorMap, "", " ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = ioutil.WriteFile("color_map.json", data, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }
