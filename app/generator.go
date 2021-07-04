@@ -26,7 +26,6 @@ func main() {
 
 	fmt.Printf("Генерация %d цвета(ов) ...\n", numberColors)
 	colorMap := generate(numberColors)
-	fmt.Println(colorMap)
 	save(colorMap)
 	fmt.Println("Готово!")
 }
