@@ -1,17 +1,12 @@
 package main
 
 import (
+	. "../src/color"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 )
-
-type Color struct {
-	Red   uint8 `json:"red"`
-	Green uint8 `json:"green"`
-	Blue  uint8 `json:"blue"`
-}
 
 func main() {
 	fmt.Println("Генерация рандомной цветовой карты.")
