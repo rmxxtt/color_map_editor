@@ -41,7 +41,7 @@ func generate(numberColors uint16) []Color {
 
 func randomColor() uint8 {
 	min := 0
-	max := 200
+	max := 255
 	return uint8(rand.Intn(max-min) + min)
 }
 
