@@ -49,7 +49,16 @@ func save(colorMap []Color) {
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile("color_map.json", data, 0644)
+
+	var path string
+	fmt.Print("Укажите путь и название файла для сохранения: ")
+	_, err = fmt.Scanln(&path)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	err = ioutil.WriteFile(path, data, 0644)
 	if err != nil {
 		panic(err)
 	}
