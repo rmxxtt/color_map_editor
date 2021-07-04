@@ -47,12 +47,10 @@ func randomColor() uint8 {
 func save(colorMap []Color) {
 	data, err := json.MarshalIndent(colorMap, "", " ")
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 	err = ioutil.WriteFile("color_map.json", data, 0644)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 }
