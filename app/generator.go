@@ -54,8 +54,7 @@ func save(colorMap []Color) {
 	fmt.Print("Укажите путь и название файла для сохранения: ")
 	_, err = fmt.Scanln(&path)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
 
 	err = ioutil.WriteFile(path, data, 0644)
