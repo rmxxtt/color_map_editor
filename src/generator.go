@@ -21,7 +21,12 @@ func main() {
 
 	fmt.Printf("Генерация %d цвета(ов) ...\n", numberColors)
 	colorMap := generate(numberColors)
-	save(colorMap)
+	err = save(colorMap)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	fmt.Println("Готово!")
 }
 
@@ -46,21 +51,23 @@ func randomUint8() uint8 {
 	return uint8(rand.Intn(255))
 }
 
-func save(colorMap []color.RGBA) {
+func save(colorMap []color.RGBA) error {
 	data, err := json.MarshalIndent(colorMap, "", " ")
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	var path string
 	fmt.Print("Укажите путь и название файла для сохранения (без формата): ")
 	_, err = fmt.Scanln(&path)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = ioutil.WriteFile(path+".json", data, 0644)
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	return nil
 }
