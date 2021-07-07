@@ -43,9 +43,7 @@ func randomColor() color.RGBA {
 }
 
 func randomUint8() uint8 {
-	min := 0
-	max := 255
-	return uint8(rand.Intn(max-min) + min)
+	return uint8(rand.Intn(255))
 }
 
 func save(colorMap []color.RGBA) {
