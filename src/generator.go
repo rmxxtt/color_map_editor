@@ -33,16 +33,12 @@ func main() {
 
 func generate(colorMap *[]color.RGBA) {
 	for k := range *colorMap {
-		(*colorMap)[k] = randomColor()
-	}
-}
-
-func randomColor() color.RGBA {
-	return color.RGBA{
-		R: uint8(rand.Intn(255)),
-		G: uint8(rand.Intn(255)),
-		B: uint8(rand.Intn(255)),
-		A: uint8(rand.Intn(255)),
+		(*colorMap)[k] = color.RGBA{
+			R: uint8(rand.Intn(255)),
+			G: uint8(rand.Intn(255)),
+			B: uint8(rand.Intn(255)),
+			A: uint8(rand.Intn(255)),
+		}
 	}
 }
 
