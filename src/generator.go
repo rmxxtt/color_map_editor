@@ -11,16 +11,16 @@ import (
 func main() {
 	fmt.Println("Генерация рандомной цветовой карты.")
 
-	var numberColors uint16
 	fmt.Print("Укажите количество цветов: ")
+	var numberColors uint16
 	_, err := fmt.Scanln(&numberColors)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	var colorMap = make([]color.RGBA, numberColors)
 	fmt.Printf("Генерация %d цвета(ов) ...\n", numberColors)
+	var colorMap = make([]color.RGBA, numberColors)
 	generate(&colorMap)
 	err = save(colorMap)
 	if err != nil {
