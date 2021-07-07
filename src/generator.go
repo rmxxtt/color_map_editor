@@ -53,13 +53,13 @@ func save(colorMap []color.RGBA) {
 	}
 
 	var path string
-	fmt.Print("Укажите путь и название файла для сохранения: ")
+	fmt.Print("Укажите путь и название файла для сохранения (без формата): ")
 	_, err = fmt.Scanln(&path)
 	if err != nil {
 		panic(err)
 	}
 
-	err = ioutil.WriteFile(path, data, 0644)
+	err = ioutil.WriteFile(path+".json", data, 0644)
 	if err != nil {
 		panic(err)
 	}
