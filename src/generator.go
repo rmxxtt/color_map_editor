@@ -19,8 +19,9 @@ func main() {
 		return
 	}
 
+	var colorMap = make([]color.RGBA, numberColors)
 	fmt.Printf("Генерация %d цвета(ов) ...\n", numberColors)
-	colorMap := generate(numberColors)
+	generate(&colorMap)
 	err = save(colorMap)
 	if err != nil {
 		fmt.Println(err)
@@ -30,12 +31,10 @@ func main() {
 	fmt.Println("Готово!")
 }
 
-func generate(numberColors uint16) []color.RGBA {
-	var colorMap = make([]color.RGBA, numberColors)
-	for k := range colorMap {
-		colorMap[k] = randomColor()
+func generate(colorMap *[]color.RGBA) {
+	for k := range *colorMap {
+		(*colorMap)[k] = randomColor()
 	}
-	return colorMap
 }
 
 func randomColor() color.RGBA {
