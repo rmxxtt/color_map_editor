@@ -1,9 +1,9 @@
 package main
 
 import (
-	. "../src/color"
 	"encoding/json"
 	"fmt"
+	"image/color"
 	"io/ioutil"
 	"math/rand"
 )
@@ -25,21 +25,30 @@ func main() {
 	fmt.Println("Готово!")
 }
 
-func generate(numberColors uint16) []Color {
-	var colorMap = make([]Color, numberColors)
+func generate(numberColors uint16) []color.RGBA {
+	var colorMap = make([]color.RGBA, numberColors)
 	for k := range colorMap {
-		colorMap[k] = Color{Red: randomColor(), Green: randomColor(), Blue: randomColor()}
+		colorMap[k] = randomColor()
 	}
 	return colorMap
 }
 
-func randomColor() uint8 {
+func randomColor() color.RGBA {
+	return color.RGBA{
+		R: randomUint8(),
+		G: randomUint8(),
+		B: randomUint8(),
+		A: randomUint8(),
+	}
+}
+
+func randomUint8() uint8 {
 	min := 0
 	max := 255
 	return uint8(rand.Intn(max-min) + min)
 }
 
-func save(colorMap []Color) {
+func save(colorMap []color.RGBA) {
 	data, err := json.MarshalIndent(colorMap, "", " ")
 	if err != nil {
 		panic(err)
