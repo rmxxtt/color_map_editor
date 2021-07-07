@@ -40,15 +40,11 @@ func generate(numberColors uint16) []color.RGBA {
 
 func randomColor() color.RGBA {
 	return color.RGBA{
-		R: randomUint8(),
-		G: randomUint8(),
-		B: randomUint8(),
-		A: randomUint8(),
+		R: uint8(rand.Intn(255)),
+		G: uint8(rand.Intn(255)),
+		B: uint8(rand.Intn(255)),
+		A: uint8(rand.Intn(255)),
 	}
-}
-
-func randomUint8() uint8 {
-	return uint8(rand.Intn(255))
 }
 
 func save(colorMap []color.RGBA) error {
