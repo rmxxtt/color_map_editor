@@ -19,13 +19,13 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	colorMapFile, err := ReadColorMapFile(path)
+	colorMapFile, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 	var colorMap []color.RGBA
-	err = JsonUnmarshal(&colorMapFile, &colorMap)
+	err = json.Unmarshal(colorMapFile, &colorMap)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -45,11 +45,6 @@ func main() {
 	}
 }
 
-func ReadColorMapFile(path string) ([]byte, error) {
-	file, err := ioutil.ReadFile(path)
-	return file, err
-}
-
 func ReadImageFile(path string, img *image.Image) error {
 	file, err := os.Open(path)
 	if err == nil {
@@ -58,10 +53,5 @@ func ReadImageFile(path string, img *image.Image) error {
 
 	*img, _, err = image.Decode(file)
 
-	return err
-}
-
-func JsonUnmarshal(file *[]byte, v *[]color.RGBA) error {
-	err := json.Unmarshal(*file, &v)
 	return err
 }
