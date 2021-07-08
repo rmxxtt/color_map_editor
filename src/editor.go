@@ -48,11 +48,14 @@ func main() {
 
 func ReadImageFile(path string, img *image.Image) error {
 	file, err := os.Open(path)
-	if err == nil {
-		_ = file.Close()
-	}
+	defer func(file *os.File) {
+		e := file.Close()
+		if e == nil {
+			err = e
+		}
+	}(file)
 
 	*img, _, err = image.Decode(file)
 
-	return err
+	return fmt.Errorf("")
 }
