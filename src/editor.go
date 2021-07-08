@@ -38,7 +38,7 @@ func main() {
 		return
 	}
 	var img image.Image
-	_, err = ReadImageFile(path, &img)
+	err = ReadImageFile(path, &img)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -50,7 +50,7 @@ func ReadColorMapFile(path string) ([]byte, error) {
 	return file, err
 }
 
-func ReadImageFile(path string, img *image.Image) (*image.Image, error) {
+func ReadImageFile(path string, img *image.Image) error {
 	file, err := os.Open(path)
 	if err == nil {
 		_ = file.Close()
@@ -58,7 +58,7 @@ func ReadImageFile(path string, img *image.Image) (*image.Image, error) {
 
 	*img, _, err = image.Decode(file)
 
-	return img, err
+	return err
 }
 
 func JsonUnmarshal(file *[]byte, v *[]color.RGBA) error {
