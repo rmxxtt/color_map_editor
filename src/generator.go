@@ -22,7 +22,7 @@ func main() {
 	fmt.Printf("Генерация %d цвета(ов) ...\n", numberColors)
 	var colorMap = make([]color.RGBA, numberColors)
 	generate(&colorMap)
-	err = save(colorMap)
+	err = save(&colorMap)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -42,8 +42,8 @@ func generate(colorMap *[]color.RGBA) {
 	}
 }
 
-func save(colorMap []color.RGBA) error {
-	data, err := json.MarshalIndent(colorMap, "", " ")
+func save(colorMap *[]color.RGBA) error {
+	data, err := json.MarshalIndent(*colorMap, "", " ")
 	if err != nil {
 		return err
 	}
