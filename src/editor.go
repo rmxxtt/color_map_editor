@@ -40,7 +40,18 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	img, imgFormat, err := ReadImageFile(path)
+	file, err := os.Open(path)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
+	defer func(file *os.File) {
+		e := file.Close()
+		if e != nil {
+			fmt.Print(err)
+		}
+	}(file)
+	img, imgFormat, err := image.Decode(file)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -51,23 +62,6 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-}
-
-func ReadImageFile(path string) (image.Image, string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, "", err
-	}
-	defer func(file *os.File) {
-		e := file.Close()
-		if err == nil {
-			err = e
-		}
-	}(file)
-
-	img, imgFormat, err := image.Decode(file)
-
-	return img, imgFormat, err
 }
 
 func pass(img image.Image, imgFormat string, colorMap []color.RGBA) error {
