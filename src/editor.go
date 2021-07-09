@@ -40,20 +40,20 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	img, err := ReadImageFile(path)
+	img, imgFormat, err := ReadImageFile(path)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 
-	err = pass(&img)
+	err = pass(img, imgFormat, colorMap)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 }
 
-func ReadImageFile(path string) (image.Image, error) {
+func ReadImageFile(path string) (image.Image, string, error) {
 	file, err := os.Open(path)
 	defer func(file *os.File) {
 		e := file.Close()
@@ -62,20 +62,20 @@ func ReadImageFile(path string) (image.Image, error) {
 		}
 	}(file)
 
-	img, _, err := image.Decode(file)
+	img, imgFormat, err := image.Decode(file)
 
-	return img, fmt.Errorf("%v", err)
+	return img, imgFormat, fmt.Errorf("%v", err)
 }
 
-func pass(img *image.Image) error {
-	bounds := (*img).Bounds()
-	size := (*img).Bounds().Size()
+func pass(img image.Image, imgFormat string, colorMap []color.RGBA) error {
+	bounds := img.Bounds()
+	size := img.Bounds().Size()
 	rect := image.Rect(0, 0, size.X, size.Y)
 	newImg := image.NewRGBA(rect)
 
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			r, g, b, a := (*img).At(x, y).RGBA()
+			r, g, b, a := img.At(x, y).RGBA()
 			r, g, b, a = r>>8, g>>8, b>>8, a>>8
 			newImg.Set(x, y, color.RGBA{
 				R: uint8(rand.Intn(255)),
@@ -90,7 +90,7 @@ func pass(img *image.Image) error {
 	var path string
 	_, err := fmt.Scanln(&path)
 
-	file, err := os.Create(path + ".todo")
+	file, err := os.Create(path + "." + imgFormat)
 	err = jpeg.Encode(file, newImg, nil)
 
 	return err
