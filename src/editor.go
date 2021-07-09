@@ -55,6 +55,9 @@ func main() {
 
 func ReadImageFile(path string) (image.Image, string, error) {
 	file, err := os.Open(path)
+	if err != nil {
+		return nil, "", err
+	}
 	defer func(file *os.File) {
 		e := file.Close()
 		if err == nil {
