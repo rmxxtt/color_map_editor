@@ -64,7 +64,7 @@ func ReadImageFile(path string) (image.Image, string, error) {
 
 	img, imgFormat, err := image.Decode(file)
 
-	return img, imgFormat, fmt.Errorf("%v", err)
+	return img, imgFormat, err
 }
 
 func pass(img image.Image, imgFormat string, colorMap []color.RGBA) error {
