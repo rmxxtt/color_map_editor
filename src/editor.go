@@ -89,7 +89,7 @@ func NearestColor(c1 color.RGBA, colorMap *[]color.RGBA) color.RGBA {
 	var r, g, b, a uint8
 
 	for _, c2 := range *colorMap {
-		distance := ColourDistance(c1, c2)
+		distance := ColorDistance(c1, c2)
 		if distance < minDistance {
 			minDistance = distance
 			r, g, b, a = c2.R, c2.G, c2.B, c2.A
@@ -99,7 +99,7 @@ func NearestColor(c1 color.RGBA, colorMap *[]color.RGBA) color.RGBA {
 	return color.RGBA{R: r, G: g, B: b, A: a}
 }
 
-func ColourDistance(c1, c2 color.RGBA) (distance float64) {
+func ColorDistance(c1, c2 color.RGBA) (distance float64) {
 	rMean := int32(c1.R+c2.R) / 2
 	r := int32(c1.R) - int32(c2.R)
 	g := int32(c1.G) - int32(c2.G)
