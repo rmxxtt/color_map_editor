@@ -15,20 +15,14 @@ import (
 func main() {
 	fmt.Println("Редактор цветовой палитры изображения.")
 
-	fmt.Print("Укажите путь до файла Цветовой карты: ")
+	fmt.Print("Укажите путь до файла Цветовой карты (без формата): ")
 	var path string
 	_, err := fmt.Scanln(&path)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
-	colorMapFile, err := ioutil.ReadFile(path)
-	if err != nil {
-		fmt.Print(err)
-		return
-	}
-	var colorMap []color.RGBA
-	err = json.Unmarshal(colorMapFile, &colorMap)
+	colorMap, err := ReadFileColorMap(path)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -40,18 +34,7 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Print(err)
-		return
-	}
-	defer func(file *os.File) {
-		e := file.Close()
-		if e != nil {
-			fmt.Print(err)
-		}
-	}(file)
-	img, imgFormat, err := image.Decode(file)
+	img, imgFormat, err := ReadImageFIle(path)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -71,7 +54,14 @@ func main() {
 		return
 	}
 
-	return
+	fmt.Println("Готово!")
+	fmt.Println("Нажмите любую клавишу для выхода...")
+	var input string
+	_, err = fmt.Scanf("%s", &input)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
 }
 
 func ColorMapEditor(img image.Image, colorMap *[]color.RGBA) image.Image {
@@ -127,8 +117,24 @@ func RBGAtoUint8(c color.Color) color.RGBA {
 	return color.RGBA{R: r, G: g, B: b, A: a}
 }
 
-func ReadImageFIle() {
+func ReadImageFIle(path string) (img image.Image, format string, err error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, "", err
+	}
+	defer func(file *os.File) {
+		e := file.Close()
+		if err == nil {
+			err = e
+		}
+	}(file)
 
+	img, format, err = image.Decode(file)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return img, format, err
 }
 
 func SaveImageFIle(img *image.Image, path, imgFormat string) error {
@@ -141,5 +147,18 @@ func SaveImageFIle(img *image.Image, path, imgFormat string) error {
 		return err
 	}
 
-	return nil
+	return err
+}
+
+func ReadFileColorMap(path string) (colorMap []color.RGBA, err error) {
+	file, err := ioutil.ReadFile(path + ".json")
+	if err != nil {
+		return colorMap, err
+	}
+	err = json.Unmarshal(file, &colorMap)
+	if err != nil {
+		return colorMap, err
+	}
+
+	return colorMap, err
 }
