@@ -91,6 +91,7 @@ func NearestColor(c1 color.RGBA, colorMap *[]color.RGBA) color.RGBA {
 	for _, c2 := range *colorMap {
 		distance := ColourDistance(c1, c2)
 		if distance < minDistance {
+			minDistance = distance
 			r, g, b, a = c2.R, c2.G, c2.B, c2.A
 		}
 	}
