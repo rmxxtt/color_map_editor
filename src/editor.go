@@ -137,8 +137,8 @@ func ReadImageFIle(path string) (img image.Image, format string, err error) {
 	return img, format, err
 }
 
-func SaveImageFIle(img *image.Image, path, imgFormat string) error {
-	file, err := os.Create(path + "." + imgFormat)
+func SaveImageFIle(img *image.Image, path, format string) error {
+	file, err := os.Create(path + "." + format)
 	if err != nil {
 		return err
 	}
