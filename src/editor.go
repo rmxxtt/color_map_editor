@@ -65,8 +65,11 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	file, err = os.Create(path + "." + imgFormat)
-	err = jpeg.Encode(file, newImg, nil)
+	err = SaveImageFIle(&newImg, path, imgFormat)
+	if err != nil {
+		fmt.Print(err)
+		return
+	}
 
 	return
 }
@@ -84,14 +87,14 @@ func ColorMapEditor(img image.Image, colorMap *[]color.RGBA) image.Image {
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
 		for x := bounds.Min.X; x < bounds.Max.X; x++ {
 			c := RBGAtoUint8(img.At(x, y))
-			newImg.Set(x, y, NewColor(c, colorMap))
+			newImg.Set(x, y, NearestColor(c, colorMap))
 		}
 	}
 
 	return newImg
 }
 
-func NewColor(c1 color.RGBA, colorMap *[]color.RGBA) color.RGBA {
+func NearestColor(c1 color.RGBA, colorMap *[]color.RGBA) color.RGBA {
 	minDistance := math.MaxFloat64
 	var r, g, b, a uint8
 
@@ -122,4 +125,21 @@ func RBGAtoUint8(c color.Color) color.RGBA {
 	b := uint8(B >> 8)
 	a := uint8(A >> 8)
 	return color.RGBA{R: r, G: g, B: b, A: a}
+}
+
+func ReadImageFIle() {
+
+}
+
+func SaveImageFIle(img *image.Image, path, imgFormat string) error {
+	file, err := os.Create(path + "." + imgFormat)
+	if err != nil {
+		return err
+	}
+	err = jpeg.Encode(file, *img, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
