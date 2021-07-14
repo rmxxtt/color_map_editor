@@ -40,7 +40,7 @@ func main() {
 		return
 	}
 
-	newImg := ColorMapEditor(img, &colorMap)
+	newImg := ColorMapEditor(img, colorMap)
 
 	fmt.Print("Укажите путь сохранения изображения (без формата): ")
 	_, err = fmt.Scanln(&path)
@@ -64,8 +64,8 @@ func main() {
 	}
 }
 
-func ColorMapEditor(img image.Image, colorMap *[]color.RGBA) image.Image {
-	if len(*colorMap) == 0 {
+func ColorMapEditor(img image.Image, colorMap []color.RGBA) image.Image {
+	if len(colorMap) == 0 {
 		return img
 	}
 
@@ -84,11 +84,11 @@ func ColorMapEditor(img image.Image, colorMap *[]color.RGBA) image.Image {
 	return newImg
 }
 
-func NearestColor(c1 color.RGBA, colorMap *[]color.RGBA) color.RGBA {
+func NearestColor(c1 color.RGBA, colorMap []color.RGBA) color.RGBA {
 	minDistance := math.MaxFloat64
 	var r, g, b, a uint8
 
-	for _, c2 := range *colorMap {
+	for _, c2 := range colorMap {
 		distance := ColorDistance(c1, c2)
 		if distance < minDistance {
 			minDistance = distance
