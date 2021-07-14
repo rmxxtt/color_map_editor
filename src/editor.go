@@ -131,9 +131,6 @@ func ReadImageFIle(path string) (img image.Image, format string, err error) {
 	}(file)
 
 	img, format, err = image.Decode(file)
-	if err != nil {
-		return nil, "", err
-	}
 
 	return img, format, err
 }
@@ -144,9 +141,6 @@ func SaveImageFIle(img *image.Image, path, format string) error {
 		return err
 	}
 	err = jpeg.Encode(file, *img, nil)
-	if err != nil {
-		return err
-	}
 
 	return err
 }
@@ -157,9 +151,6 @@ func ReadFileColorMap(path string) (colorMap []color.RGBA, err error) {
 		return colorMap, err
 	}
 	err = json.Unmarshal(file, &colorMap)
-	if err != nil {
-		return colorMap, err
-	}
 
 	return colorMap, err
 }
