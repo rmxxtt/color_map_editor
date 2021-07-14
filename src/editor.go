@@ -49,7 +49,7 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	err = SaveImageFIle(&newImg, path, imgFormat)
+	err = SaveImageFile(&newImg, path, imgFormat)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -136,7 +136,7 @@ func ReadImageFile(path string) (img image.Image, format string, err error) {
 	return img, format, err
 }
 
-func SaveImageFIle(img *image.Image, path, format string) error {
+func SaveImageFile(img *image.Image, path, format string) error {
 	file, err := os.Create(path + "." + format)
 	if err != nil {
 		return err
