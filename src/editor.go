@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"image/jpeg"
+	"image/png"
 	_ "image/png"
 	"io/ioutil"
 	"math"
@@ -34,13 +35,13 @@ func main() {
 		fmt.Print(err)
 		return
 	}
-	img, imgFormat, err := ReadImageFIle(path)
+	img, imgFormat, err := ReadImageFile(path)
 	if err != nil {
 		fmt.Print(err)
 		return
 	}
 
-	newImg := ColorMapEditor(img, colorMap)
+	newImg := EditColorMap(img, colorMap)
 
 	fmt.Print("Укажите путь сохранения изображения (без формата): ")
 	_, err = fmt.Scanln(&path)
@@ -64,7 +65,7 @@ func main() {
 	}
 }
 
-func ColorMapEditor(img image.Image, colorMap []color.RGBA) image.Image {
+func EditColorMap(img image.Image, colorMap []color.RGBA) image.Image {
 	if len(colorMap) == 0 {
 		return img
 	}
@@ -118,7 +119,7 @@ func RBGAtoUint8(c color.Color) color.RGBA {
 	return color.RGBA{R: r, G: g, B: b, A: a}
 }
 
-func ReadImageFIle(path string) (img image.Image, format string, err error) {
+func ReadImageFile(path string) (img image.Image, format string, err error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, "", err
@@ -140,7 +141,12 @@ func SaveImageFIle(img *image.Image, path, format string) error {
 	if err != nil {
 		return err
 	}
-	err = jpeg.Encode(file, *img, nil)
+	switch format {
+	case "jpeg":
+		err = jpeg.Encode(file, *img, nil)
+	case "png":
+		err = png.Encode(file, *img)
+	}
 
 	return err
 }
@@ -148,7 +154,7 @@ func SaveImageFIle(img *image.Image, path, format string) error {
 func ReadFileColorMap(path string) (colorMap []color.RGBA, err error) {
 	file, err := ioutil.ReadFile(path + ".json")
 	if err != nil {
-		return colorMap, err
+		return nil, err
 	}
 	err = json.Unmarshal(file, &colorMap)
 
