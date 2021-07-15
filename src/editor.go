@@ -131,9 +131,7 @@ func ReadImageFile(path string) (img image.Image, format string, err error) {
 		}
 	}(file)
 
-	img, format, err = image.Decode(file)
-
-	return img, format, err
+	return image.Decode(file)
 }
 
 func SaveImageFile(img *image.Image, path, format string) error {
